@@ -4,18 +4,22 @@ var context = canvas.getContext('2d')
 var grid = 16
 var count = 0
 
-var snake = {
+var movements = []
+
+var gameOver = false
+
+var bot = {
   x: 160,
   y: 160,
 
-  // snake velocity. moves one grid length every frame in either the x or y direction
+  // bot velocity
   dx: grid,
   dy: 0,
 
-  // keep track of all grids the snake body occupies
+  // keep track of cells
   cells: [],
 
-  // length of the snake
+  // length of the bot
   maxCells: 1,
 }
 
@@ -34,94 +38,108 @@ function getRandomInt(min, max) {
 function loop() {
   requestAnimationFrame(loop)
 
-  // wrap snake position horizontally on edge of screen
-  if (snake.x < 0) {
-    snake.x = canvas.width - grid
-  } else if (snake.x >= canvas.width) {
-    snake.x = 0
+  count = 0
+  context.clearRect(0, 0, canvas.width, canvas.height)
+
+  // wrap bot position horizontally on edge of screen
+  if (bot.x < 0) {
+    bot.x = canvas.width - grid
+  } else if (bot.x >= canvas.width) {
+    bot.x = 0
   }
 
-  // wrap snake position vertically on edge of screen
-  if (snake.y < 0) {
-    snake.y = canvas.height - grid
-  } else if (snake.y >= canvas.height) {
-    snake.y = 0
-  }
-
-  // keep track of where snake has been. front of the array is always the head
-  snake.cells.unshift({ x: snake.x, y: snake.y })
-
-  // remove cells as we move away from them
-  if (snake.cells.length > snake.maxCells) {
-    snake.cells.pop()
+  // wrap bot position vertically on edge of screen
+  if (bot.y < 0) {
+    bot.y = canvas.height - grid
+  } else if (bot.y >= canvas.height) {
+    bot.y = 0
   }
 
   // draw objective
   context.fillStyle = 'red'
   context.fillRect(objective.x, objective.y, grid - 1, grid - 1)
 
-  // draw snake one cell at a time
+  // draw bot
   context.fillStyle = 'green'
-  snake.cells.forEach(function (cell, index) {
-    // drawing 1 px smaller than the grid creates a grid effect in the snake body so you can see how long it is
-    context.fillRect(cell.x, cell.y, grid - 1, grid - 1)
-
-    // snake ate apple
-    // if (cell.x === apple.x && cell.y === apple.y) {
-    //   snake.maxCells++
-
-    //   // canvas is 400x400 which is 25x25 grids
-    //   apple.x = getRandomInt(0, 25) * grid
-    //   apple.y = getRandomInt(0, 25) * grid
-    // }
-
-    // check collision with all cells after this one (modified bubble sort)
-    // for (var i = index + 1; i < snake.cells.length; i++) {
-    //   // snake occupies same space as a body part. reset game
-    //   if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-    //     snake.x = 160
-    //     snake.y = 160
-    //     snake.cells = []
-    //     snake.maxCells = 4
-    //     snake.dx = grid
-    //     snake.dy = 0
-
-    //     apple.x = getRandomInt(0, 25) * grid
-    //     apple.y = getRandomInt(0, 25) * grid
-    //   }
-    // }
-  })
+  context.fillRect(bot.x, bot.y, grid - 1, grid - 1)
+  // bot on objective
+  if (bot.x === objective.x && bot.y === objective.y) {
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.font = '60px san-serif'
+    context.fillText('Snake Bot Escaped!', 80, 200, 250)
+    gameOver = true
+    document.removeEventListener('keydown', (e) => keyPressHandeler(e))
+  }
 }
 
-// listen to keyboard events to move the snake
-document.addEventListener('keydown', function (e) {
-  // prevent snake from backtracking on itself by checking that it's
-  // not already moving on the same axis (pressing left while moving
-  // left won't do anything, and pressing right while moving left
-  // shouldn't let you collide with your own body)
+// listen to keyboard events to move the bot if game not over
+if (gameOver == false) {
+  // start the game
+  requestAnimationFrame(loop)
+  document.addEventListener('keydown', (e) => keyPressHandeler(e))
+} else {
+  document.removeEventListener('keydown', (e) => keyPressHandeler(e))
+}
 
+function keyPressHandeler(e) {
   // left arrow key
   if (e.which === 37) {
-    console.log('I was here')
-    snake.dx = -grid
-    snake.dy = 0
+    bot.x -= grid
+    if (movements.length == 0) {
+      movements.push({ moveType: 'LEFT', steps: 1 })
+    }
+    var lastMovement = movements.pop()
+    if (lastMovement.moveType === 'LEFT') {
+      lastMovement.steps += 1
+      movements.push(lastMovement)
+    } else {
+      movements.push(lastMovement)
+      movements.push({ moveType: 'LEFT', steps: 1 })
+    }
   }
   // up arrow key
   else if (e.which === 38) {
-    snake.dy = -grid
-    snake.dx = 0
+    bot.y -= grid
+    if (movements.length == 0) {
+      movements.push({ moveType: 'UP', steps: 1 })
+    }
+    var lastMovement = movements.pop()
+    if (lastMovement.moveType === 'UP') {
+      lastMovement.steps += 1
+      movements.push(lastMovement)
+    } else {
+      movements.push(lastMovement)
+      movements.push({ moveType: 'UP', steps: 1 })
+    }
   }
   // right arrow key
   else if (e.which === 39) {
-    snake.dx = grid
-    snake.dy = 0
+    bot.x += grid
+    if (movements.length == 0) {
+      movements.push({ moveType: 'RIGHT', steps: 1 })
+    }
+    var lastMovement = movements.pop()
+    if (lastMovement.moveType === 'RIGHT') {
+      lastMovement.steps += 1
+      movements.push(lastMovement)
+    } else {
+      movements.push(lastMovement)
+      movements.push({ moveType: 'RIGHT', steps: 1 })
+    }
   }
   // down arrow key
   else if (e.which === 40) {
-    snake.dy = grid
-    snake.dx = 0
+    bot.y += grid
+    if (movements.length == 0) {
+      movements.push({ moveType: 'DOWN', steps: 1 })
+    }
+    var lastMovement = movements.pop()
+    if (lastMovement.moveType === 'DOWN') {
+      lastMovement.steps += 1
+      movements.push(lastMovement)
+    } else {
+      movements.push(lastMovement)
+      movements.push({ moveType: 'DOWN', steps: 1 })
+    }
   }
-})
-
-// start the game
-requestAnimationFrame(loop)
+}
