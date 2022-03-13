@@ -21,4 +21,5 @@
 
 {% block scripts %}
 <script src="{% static "/js/game.js" %}"></script>
+<script> const CSRFToken = "{{ csrf_token}}"; </script>
 {% endblock %}

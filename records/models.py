@@ -2,11 +2,10 @@ from django.db import models
 
 # Create your models here.
 class GameRecord(models.Model):
-    id = models.BigAutoField(primary_key=True, editable=False)
     datetime = models.DateField()
 
     def __str__(self):
-        return self.datetime
+        return str(self.datetime)
 
 class Plays(models.Model):
     MOVE_TYPES = (

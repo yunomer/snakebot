@@ -6,6 +6,6 @@ from django.urls import path, include
 from records import views
 
 urlpatterns = [
-    path('', views.RecordView, name='records'),
+    path('', views.RecordView.as_view(), name='records'),
     path('create', views.createRecord, name='create'),
 ]

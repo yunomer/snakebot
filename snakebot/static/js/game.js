@@ -38,8 +38,6 @@ function getRandomInt(min, max) {
 
 // game loop
 function loop() {
-  requestAnimationFrame(loop)
-
   count = 0
   context.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -82,12 +80,27 @@ function loop() {
       datetime: new Date().toLocaleString(),
       plays: JSON.stringify(movements),
     }
+    fetch('/records/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'X-CSRFTOKEN': CSRFToken,
+      },
+      body: new URLSearchParams({
+        dateTime: Math.floor(Date.now() / 1000),
+        data: JSON.stringify(movements),
+      }),
+    }).then(() => {
+      console.log('Data Sent')
+    })
     viewsolBtn.innerHTML = `
           <div class="col">
                 <input id="submitBtn" type="submit" value="Save Record">
             </div>
           `
+    return
   }
+  requestAnimationFrame(loop)
 }
 
 let keyPressHandeler = function (e) {
@@ -153,12 +166,6 @@ let keyPressHandeler = function (e) {
   }
 }
 
-// TODO: figure out how to remove eventlistener
-// listen to keyboard events to move the bot if game not over
-if (gameOver == false) {
-  // start the game
-  requestAnimationFrame(loop)
-  document.addEventListener('keydown', keyPressHandeler)
-} else {
-  document.removeEventListener('keydown', keyPressHandeler)
-}
+// start the game
+requestAnimationFrame(loop)
+document.addEventListener('keydown', keyPressHandeler)

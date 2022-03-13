@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for obj in object_list %}
+        <div>
+            <h1>{{obj}}</h1>
+            {% for play in obj.plays_set.all %}
+                {{play.get_moveType_display}} {{play.spaces}} <br></br>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock%}
