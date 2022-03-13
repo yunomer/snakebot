@@ -21,6 +21,6 @@ from django.urls import path, include
 from snakebot import views
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-    path('', views.GameView.as_view(), name='game')
+    path('', views.GameView, name='game'),
+    path('records/', include('records.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

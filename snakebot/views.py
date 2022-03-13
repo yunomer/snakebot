@@ -1,4 +1,8 @@
+from re import template
 from django.views.generic import TemplateView
 
-class GameView(TemplateView):
-    template_name = 'game.html'
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def GameView(response):
+    return render(response, "game.html")

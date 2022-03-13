@@ -78,11 +78,13 @@ function loop() {
     gameOver = true
     document.removeEventListener('keydown', keyPressHandeler)
     let viewsolBtn = document.getElementById('viewsol')
+    let data = {
+      datetime: new Date().toLocaleString(),
+      plays: JSON.stringify(movements),
+    }
     viewsolBtn.innerHTML = `
           <div class="col">
-                <a class="btn btn-secondary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-                    View Records
-                </a>
+                <input id="submitBtn" type="submit" value="Save Record">
             </div>
           `
   }

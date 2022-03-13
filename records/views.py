@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+def RecordView(response):
+    return render(response, "records.html")
+
+def createRecord(response):
+    if response.method == "POST":
+        print(response)

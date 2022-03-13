@@ -4,12 +4,17 @@ from django.db import models
 class GameRecord(models.Model):
     id = models.BigAutoField(primary_key=True, editable=False)
     datetime = models.DateField()
-    # img = models.ImageField()
 
     def __str__(self):
         return self.datetime
 
-class plays(models.Model):
-    gameRecord = models.ForeignKey(GameRecord, on_delete=models.CASCADE)
-    # move = models.TextChoices("UP", "DOWN", "LEFT", "RIGHT")
+class Plays(models.Model):
+    MOVE_TYPES = (
+        (0, 'UP'),
+        (1, 'DOWN'),
+        (2, 'LEFT'),
+        (3, 'RIGHT'),
+    )
+    gameRecord = models.ForeignKey(to=GameRecord, on_delete=models.CASCADE)
+    moveType = models.PositiveSmallIntegerField(choices=MOVE_TYPES, blank=False)
     spaces = models.IntegerField()
