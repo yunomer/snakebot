@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class GameRecord(models.Model):
     datetime = models.DateField()
+    absDistance = models.DecimalField(max_digits=19, decimal_places=2)
 
     def __str__(self):
         return str(self.datetime)

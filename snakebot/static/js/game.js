@@ -95,7 +95,7 @@ function loop() {
     })
     viewsolBtn.innerHTML = `
           <div class="col">
-                <input id="submitBtn" type="submit" value="Save Record">
+                <a href="/records/" class="btn btn-outline-light" role="button">View Result</a>
             </div>
           `
     return

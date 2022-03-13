@@ -8,4 +8,5 @@ from records import views
 urlpatterns = [
     path('', views.RecordView.as_view(), name='records'),
     path('create', views.createRecord, name='create'),
+    path('delete/:id', views.deleteRecord, name='delete'),
 ]

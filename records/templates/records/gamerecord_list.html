@@ -1,11 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for obj in object_list %}
-        <div>
-            <h1>{{obj}}</h1>
-            {% for play in obj.plays_set.all %}
-                {{play.get_moveType_display}} {{play.spaces}} <br></br>
-            {% endfor %}
-        </div>
-    {% endfor %}
+    <div class="container mt-5">
+        {% for obj in object_list %}
+            <div class="container mb-3 h-100 d-inline-block border border-white rounded"  style="max-height: 300px">
+                <div class="row p-3">
+                    <div class="col-lg-12 text-left">
+                        <h3>
+                            Game Date: {{obj.datetime}}
+                        </h3>
+                        <div class="row gx-5">
+                            <div class="col-lg-4 text-center">
+                                <h6>
+                                    # Moves
+                                </h6>
+                                <h6>
+                                    {{obj.plays_set.all.count}}
+                                </h6>
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                <h6>
+                                    Absolute distance
+                                </h6>
+                                <h6>
+                                    {{obj.absDistance}}
+                                </h6>
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                <div class="table-responsive-sm" style="max-height: 150px; overflow: auto; display:inline-block;">
+                                    <table class="table table-dark">
+                                        <thead style="position: sticky; top: 0;">
+                                            <tr>
+                                            <th scope="col">Direction</th>
+                                            <th scope="col">Steps</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for play in obj.plays_set.all %}
+                                                <tr>
+                                                    <td>{{play.get_moveType_display}}</td>
+                                                    <td>{{play.spaces}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock%}
