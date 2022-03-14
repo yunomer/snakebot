@@ -22,7 +22,7 @@ python manage.py runserver
 Your app should be running at http://localhost:8000
 
 ## Some TODOs
-- [ ] Create Branch: Update Game homepage, let users view steps they take (live)
+- [X] Create Branch: Update Game homepage, let users view steps they take (live)
 - [ ] Figure out: O(n) better than insert and update?
 - [X] Add delete button
 - [ ] Add Delete form sanitation and validation
