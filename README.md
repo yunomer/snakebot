@@ -26,7 +26,7 @@ Your app should be running at http://localhost:8000
 - [ ] Figure out: O(n) better than insert and update?
 - [X] Add delete button
 - [ ] Add Delete form sanitation and validation
-- [ ] Limit query to only 10
+- [X] Limit query to only 10
 - [x] Fix Game end button to redirect to records page
 - [ ] Rework database insertion, remove redundent iteration
 - [x] Fix Height styling
