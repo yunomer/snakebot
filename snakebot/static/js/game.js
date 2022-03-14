@@ -90,14 +90,17 @@ let keyPressHandeler = function (e) {
     bot.x -= grid
     if (movements.length == 0) {
       movements.push({ moveType: 'LEFT', steps: 1 })
+      handleTableUpdate ({ moveType: 'LEFT', steps: 1 })
     } else {
       let lastMovement = movements.pop()
       if (lastMovement.moveType === 'LEFT') {
         lastMovement.steps += 1
         movements.push(lastMovement)
+        handleTableUpdate(lastMovement)
       } else {
         movements.push(lastMovement)
         movements.push({ moveType: 'LEFT', steps: 1 })
+        handleTableUpdate ({ moveType: 'LEFT', steps: 1 })
       }
     }
   }
@@ -106,14 +109,17 @@ let keyPressHandeler = function (e) {
     bot.y -= grid
     if (movements.length == 0) {
       movements.push({ moveType: 'UP', steps: 1 })
+      handleTableUpdate({ moveType: 'UP', steps: 1 })
     } else {
       let lastMovement = movements.pop()
       if (lastMovement.moveType === 'UP') {
         lastMovement.steps += 1
         movements.push(lastMovement)
+        handleTableUpdate(lastMovement)
       } else {
         movements.push(lastMovement)
         movements.push({ moveType: 'UP', steps: 1 })
+        handleTableUpdate({ moveType: 'UP', steps: 1 })
       }
     }
   }
@@ -127,9 +133,11 @@ let keyPressHandeler = function (e) {
       if (lastMovement.moveType === 'RIGHT') {
         lastMovement.steps += 1
         movements.push(lastMovement)
+        handleTableUpdate(lastMovement)
       } else {
         movements.push(lastMovement)
         movements.push({ moveType: 'RIGHT', steps: 1 })
+        handleTableUpdate({ moveType: 'RIGHT', steps: 1 })
       }
     }
   }
@@ -138,17 +146,28 @@ let keyPressHandeler = function (e) {
     bot.y += grid
     if (movements.length == 0) {
       movements.push({ moveType: 'DOWN', steps: 1 })
+      handleTableUpdate({ moveType: 'DOWN', steps: 1 })
     } else {
       let lastMovement = movements.pop()
       if (lastMovement.moveType === 'DOWN') {
         lastMovement.steps += 1
         movements.push(lastMovement)
+        handleTableUpdate(lastMovement)
       } else {
         movements.push(lastMovement)
         movements.push({ moveType: 'DOWN', steps: 1 })
+        handleTableUpdate({ moveType: 'DOWN', steps: 1 })
       }
     }
   }
+}
+
+function handleTableUpdate (movement) {
+  var td = document.createElement("td");
+  td.innerHTML = `${movement.moveType}: ${movement.steps}`;
+  var tr = document.createElement("tr");
+  tr.appendChild(td);
+  document.getElementById("tbody").appendChild(tr);
 }
 
 // start the game

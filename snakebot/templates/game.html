@@ -8,19 +8,23 @@
 {% endblock %}
 
 {% block content %}
-<div>
-    <div class="container px-4">
-        <h6>Use your Keyboard arrows, move Green Bot to the Red objective.</h6>
-        <h6>Click Records to view all your moves and stats</h6>
-    <div>
-    <div class="container px-4">
-        <div class="row gx-5">
-            <div class="col">
-                <canvas width="400" height="400" id="game"></canvas>
-            </div>
-        </div>
-        {% csrf_token %}
+<div class="row justify-content-center">
+    <div class = "col col-lg-4">
+        <canvas width="400" height="400" id="game"></canvas>
         <div id="viewsol" class="row gx-5">
+        </div>
+    </div>
+    <div class="col-lg-4 text-center">
+         <div class="table-responsive-lg" style="max-height: 400px; overflow: auto; display: inline-block">
+            <table class="table table-dark">
+            <thead style="position: sticky; top: 0">
+                <tr>
+                <th scope="col">Direction: Steps</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+            </table>
         </div>
     </div>
 </div>
