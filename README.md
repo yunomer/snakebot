@@ -2,6 +2,8 @@
 
 This is a simply Django app that lets users play with a tiny dot named "Bot". The objective of the player is to help move Bot from it's current location to the exit point which is the red dot.
 
+![Alt text](https://github.com/yunomer/snakebot/blob/main/snakebot/static/images/snakebot.png "Game image")
+
 ## Getting up and running
 
 This app requires [Python 3.7](https://www.python.org/downloads/) or greater.
