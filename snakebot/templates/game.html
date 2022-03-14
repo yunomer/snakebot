@@ -2,8 +2,17 @@
 
 {% load static %}
 
+{% block headerLinks %}
+    <a class="nav-link active" aria-current="page" href="/">Game</a>
+    <a class="nav-link" href="/records">Records</a>
+{% endblock %}
+
 {% block content %}
 <div>
+    <div class="container px-4">
+        <h6>Use your Keyboard arrows, move Green Bot to the Red objective.</h6>
+        <h6>Click Records to view all your moves and stats</h6>
+    <div>
     <div class="container px-4">
         <div class="row gx-5">
             <div class="col">

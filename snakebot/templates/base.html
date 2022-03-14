@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" class="h-100" style="height: 100 vh">
+<html lang="en" class="h-100">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,14 +17,16 @@
 
     <title>SnakeBot</title>
   </head>
-  <body class="d-flex h-100 text-center text-white bg-dark" style="height: 100 vh">
+  <body class="d-flex h-100 text-center text-white bg-dark">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
       <header class="mb-auto">
         <div>
           <h3 class="float-md-start mb-0">SNAKE BOT</h3>
           <nav class="nav nav-masthead justify-content-center float-md-end">
-            <a class="nav-link active" aria-current="page" href="/">Game</a>
-            <a class="nav-link" href="/records">Records</a>
+            {% block headerLinks %}
+              <a class="nav-link" aria-current="page" href="/">Game</a>
+              <a class="nav-link" href="/records">Records</a>
+            {% endblock %}
           </nav>
         </div>
       </header>
@@ -36,7 +38,9 @@
           Project on
           <a
           href="https://github.com/yunomer/snakebot"
-          class="text-white">
+          class="text-white"
+          target="_blank"
+          >
             GitHub
           </a>
         </p>

@@ -1,33 +1,17 @@
 let canvas = document.getElementById('game')
 let context = canvas.getContext('2d')
 
+// What each grid step is (Make it look game like)
 let grid = 16
-let count = 0
-
+// Array to record all moves/steps
 let movements = []
 
-let gameOver = false
-let screenshot = false
-var mediumQualityScreenshot = null
-
+// Bot positioning on canvas
 let bot = {
   x: 160,
   y: 160,
-
-  // bot velocity
-  dx: grid,
-  dy: 0,
-
   // keep track of cells
   cells: [],
-
-  // length of the bot
-  maxCells: 1,
-}
-
-let objective = {
-  x: 320,
-  y: 320,
 }
 
 // get random whole numbers in a specific range
@@ -36,9 +20,14 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min
 }
 
+// canvas is 400x400 which is 25x25 grids
+let objective = {
+  x: getRandomInt(0, 25) * grid,
+  y: getRandomInt(0, 25) * grid,
+}
+
 // game loop
 function loop() {
-  count = 0
   context.clearRect(0, 0, canvas.width, canvas.height)
 
   // wrap bot position horizontally on edge of screen
@@ -63,23 +52,14 @@ function loop() {
   context.fillStyle = 'green'
   context.fillRect(bot.x, bot.y, grid - 1, grid - 1)
 
-  if (!screenshot) {
-    mediumQualityScreenshot = canvas.toDataURL('image/jpeg', 0.5)
-    screenshot = true
-  }
-
   // bot on objective
   if (bot.x === objective.x && bot.y === objective.y) {
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.font = '60px system-ui'
     context.fillText('Snake Bot Escaped!', 80, 200, 250)
-    gameOver = true
     document.removeEventListener('keydown', keyPressHandeler)
     let viewsolBtn = document.getElementById('viewsol')
-    let data = {
-      datetime: new Date().toLocaleString(),
-      plays: JSON.stringify(movements),
-    }
+    // Post data to database
     fetch('/records/create', {
       method: 'POST',
       headers: {
@@ -93,6 +73,7 @@ function loop() {
     }).then(() => {
       console.log('Data Sent')
     })
+    // Update UI and add button to tell user to check records
     viewsolBtn.innerHTML = `
           <div class="col">
                 <a href="/records/" class="btn btn-outline-light" role="button">View Result</a>
@@ -109,14 +90,15 @@ let keyPressHandeler = function (e) {
     bot.x -= grid
     if (movements.length == 0) {
       movements.push({ moveType: 'LEFT', steps: 1 })
-    }
-    let lastMovement = movements.pop()
-    if (lastMovement.moveType === 'LEFT') {
-      lastMovement.steps += 1
-      movements.push(lastMovement)
     } else {
-      movements.push(lastMovement)
-      movements.push({ moveType: 'LEFT', steps: 1 })
+      let lastMovement = movements.pop()
+      if (lastMovement.moveType === 'LEFT') {
+        lastMovement.steps += 1
+        movements.push(lastMovement)
+      } else {
+        movements.push(lastMovement)
+        movements.push({ moveType: 'LEFT', steps: 1 })
+      }
     }
   }
   // up arrow key
@@ -124,14 +106,15 @@ let keyPressHandeler = function (e) {
     bot.y -= grid
     if (movements.length == 0) {
       movements.push({ moveType: 'UP', steps: 1 })
-    }
-    let lastMovement = movements.pop()
-    if (lastMovement.moveType === 'UP') {
-      lastMovement.steps += 1
-      movements.push(lastMovement)
     } else {
-      movements.push(lastMovement)
-      movements.push({ moveType: 'UP', steps: 1 })
+      let lastMovement = movements.pop()
+      if (lastMovement.moveType === 'UP') {
+        lastMovement.steps += 1
+        movements.push(lastMovement)
+      } else {
+        movements.push(lastMovement)
+        movements.push({ moveType: 'UP', steps: 1 })
+      }
     }
   }
   // right arrow key
@@ -139,14 +122,15 @@ let keyPressHandeler = function (e) {
     bot.x += grid
     if (movements.length == 0) {
       movements.push({ moveType: 'RIGHT', steps: 1 })
-    }
-    let lastMovement = movements.pop()
-    if (lastMovement.moveType === 'RIGHT') {
-      lastMovement.steps += 1
-      movements.push(lastMovement)
     } else {
-      movements.push(lastMovement)
-      movements.push({ moveType: 'RIGHT', steps: 1 })
+      let lastMovement = movements.pop()
+      if (lastMovement.moveType === 'RIGHT') {
+        lastMovement.steps += 1
+        movements.push(lastMovement)
+      } else {
+        movements.push(lastMovement)
+        movements.push({ moveType: 'RIGHT', steps: 1 })
+      }
     }
   }
   // down arrow key
@@ -154,14 +138,15 @@ let keyPressHandeler = function (e) {
     bot.y += grid
     if (movements.length == 0) {
       movements.push({ moveType: 'DOWN', steps: 1 })
-    }
-    let lastMovement = movements.pop()
-    if (lastMovement.moveType === 'DOWN') {
-      lastMovement.steps += 1
-      movements.push(lastMovement)
     } else {
-      movements.push(lastMovement)
-      movements.push({ moveType: 'DOWN', steps: 1 })
+      let lastMovement = movements.pop()
+      if (lastMovement.moveType === 'DOWN') {
+        lastMovement.steps += 1
+        movements.push(lastMovement)
+      } else {
+        movements.push(lastMovement)
+        movements.push({ moveType: 'DOWN', steps: 1 })
+      }
     }
   }
 }

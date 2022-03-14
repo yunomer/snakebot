@@ -1,13 +1,13 @@
 from datetime import datetime
 from django.views.generic import ListView
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from records.models import GameRecord, Plays
 import json
 import math
 
 class RecordView(ListView):
-    model = GameRecord
+    queryset = GameRecord.objects.order_by('-id').all()[:10]
 
 def createRecord(request: HttpRequest):
     if request.method == "POST":
@@ -57,9 +57,10 @@ def createRecord(request: HttpRequest):
                 moveType = moveType,
                 spaces = rawSpaces
             )
-
     return HttpResponse(status=204)
 
 def deleteRecord(request: HttpRequest, id):
-    if request.method == "DELETE":
-        print("I was here")
+    if request.method == "POST":
+        # TODO: Validate the form before deleting stuff
+        GameRecord.objects.filter(id=id).delete()
+    return HttpResponseRedirect('/records')
